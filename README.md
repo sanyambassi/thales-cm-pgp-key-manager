@@ -51,6 +51,12 @@ Run the application using the following command:
 python app.py
 ```
 
+**OR
+
+```bash
+python3 app.py
+```
+
 The application will be accessible at:
 
 https://localhost:443
