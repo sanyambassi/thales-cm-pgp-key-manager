@@ -57,19 +57,20 @@ https://localhost:443
 
 
 ## Importing a PGP Key
-- Enter the required details (CipherTrust Manager IP, username, password, domain, auth domain, and key name).
+- Enter the required details (CipherTrust Manager IP, username, password, domain, auth domain, and a key name).
 - Select the Import Key option.
-Paste the PGP key contents or upload a PGP key file.
-Click Submit to import the PGP key.
-Exporting a PGP Key
-Select the Export Key option.
-Enter the required details (CipherTrust Manager IP, username, password, domain, auth domain, and key name).
-Click Submit to export the PGP key.
-The exported PGP key will be displayed on the right side of the screen.
+- Paste the PGP key contents or upload a PGP key file.
+- Click Submit to import the PGP key.
+- The ID and fingerprint of the imported key will be displayed. 
+
+## Exporting a PGP Key
+- Enter the required details (CipherTrust Manager IP, username, password, domain, auth domain, and a key name).
+- Select the Export Key option.
+- Click Submit to export the PGP key.
+- The exported PGP key will be displaye.
 
 ## Project Structure
-bash
-Copy code
+```bash
 pgp-key-import-export-ciphertrust/
 │
 ├── app.py                      # Main Flask application file
@@ -80,3 +81,4 @@ pgp-key-import-export-ciphertrust/
 ├── templates/                   # Directory for HTML templates
 │   └── index.html               # Main HTML template for the application
 └── README.md                    # This readme file
+```
