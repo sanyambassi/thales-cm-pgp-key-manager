@@ -27,7 +27,7 @@ You can install the necessary dependencies by running:
 ```bash
 pip install flask requests
 
-Application Setup
+## Application Setup
 Clone the Repository: Clone this repository to your local machine:
 
 bash
@@ -48,7 +48,7 @@ The application will be accessible at:
 
 HTTPS: https://localhost:443
 
-Usage
+## Usage
 Importing a PGP Key
 Select the Import Key option.
 Enter the required details (CipherTrust Manager IP, username, password, domain, auth domain, and key name).
@@ -59,7 +59,8 @@ Select the Export Key option.
 Enter the required details (CipherTrust Manager IP, username, password, domain, auth domain, and key name).
 Click Submit to export the PGP key.
 The exported PGP key will be displayed on the right side of the screen.
-Project Structure
+
+## Project Structure
 bash
 Copy code
 pgp-key-import-export-ciphertrust/
