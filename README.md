@@ -74,7 +74,7 @@ The application will be accessible at:
 - Enter the required details (CipherTrust Manager IP, username, password, domain, auth domain, and a key name).
 - Select the Export Key option.
 - Click Submit to export the PGP key.
-- The exported PGP key will be displaye.
+- The exported PGP key will be displayed.
 
 ## Project Structure
 ```bash
