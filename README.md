@@ -71,13 +71,12 @@ https://localhost:443
 
 ## Project Structure
 ```bash
-pgp-key-import-export-ciphertrust/
+thales-cm-pgp-key-manager/
 │
 ├── app.py                      # Main Flask application file
 ├── certs/                       # Directory containing SSL certificates
-│   ├── selfsigned.crt           # Self-signed certificate (generated)
-│   └── selfsigned.key           # Self-signed private key (generated)
-├── static/                      # Directory for static files (optional, if you add CSS or JavaScript)
+│   ├── signed.crt           # Self-signed certificate (generated)
+│   └── signed.key           # Self-signed private key (generated)
 ├── templates/                   # Directory for HTML templates
 │   └── index.html               # Main HTML template for the application
 └── README.md                    # This readme file
