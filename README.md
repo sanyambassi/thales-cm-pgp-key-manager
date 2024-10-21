@@ -56,9 +56,9 @@ The application will be accessible at:
 https://localhost:443
 
 ## Usage
-- ## Importing a PGP Key
-- Select the Import Key option.
-- Enter the required details (CipherTrust Manager IP, username, password, domain, auth domain, and key name).
+ - Importing a PGP Key
+ - Select the Import Key option.
+ - Enter the required details (CipherTrust Manager IP, username, password, domain, auth domain, and key name).
 Paste the PGP key contents or upload a PGP key file.
 Click Submit to import the PGP key.
 Exporting a PGP Key
