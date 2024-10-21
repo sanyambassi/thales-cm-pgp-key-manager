@@ -26,3 +26,49 @@ You can install the necessary dependencies by running:
 
 ```bash
 pip install flask requests
+
+Application Setup
+Clone the Repository: Clone this repository to your local machine:
+
+bash
+Copy code
+git clone https://github.com/yourusername/pgp-key-import-export-ciphertrust.git
+cd pgp-key-import-export-ciphertrust
+SSL Certificate Generation: This application uses SSL to ensure secure communication. To generate a self-signed SSL certificate, run the following command:
+
+bash
+Copy code
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout certs/selfsigned.key -out certs/selfsigned.crt -subj "/CN=localhost"
+Run the Application: Run the Flask application using the following command:
+
+bash
+Copy code
+python app.py
+The application will be accessible at:
+
+HTTPS: https://localhost:443
+
+Usage
+Importing a PGP Key
+Select the Import Key option.
+Enter the required details (CipherTrust Manager IP, username, password, domain, auth domain, and key name).
+Paste the PGP key contents or upload a PGP key file.
+Click Submit to import the PGP key.
+Exporting a PGP Key
+Select the Export Key option.
+Enter the required details (CipherTrust Manager IP, username, password, domain, auth domain, and key name).
+Click Submit to export the PGP key.
+The exported PGP key will be displayed on the right side of the screen.
+Project Structure
+bash
+Copy code
+pgp-key-import-export-ciphertrust/
+│
+├── app.py                      # Main Flask application file
+├── certs/                       # Directory containing SSL certificates
+│   ├── selfsigned.crt           # Self-signed certificate (generated)
+│   └── selfsigned.key           # Self-signed private key (generated)
+├── static/                      # Directory for static files (optional, if you add CSS or JavaScript)
+├── templates/                   # Directory for HTML templates
+│   └── index.html               # Main HTML template for the application
+└── README.md                    # This readme file
