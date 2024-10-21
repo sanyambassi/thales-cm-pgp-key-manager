@@ -24,8 +24,9 @@ To run this application, you will need:
 
 You can install the necessary dependencies by running:
 
-bash
+```bash
 pip install flask requests
+```
 
 ## Application Setup
 
