@@ -73,10 +73,10 @@ https://localhost:443
 ```bash
 thales-cm-pgp-key-manager/
 │
-├── app.py                      # Main Flask application file
+├── app.py                       # Main Flask application file
 ├── certs/                       # Directory containing SSL certificates
-│   ├── signed.crt           # Self-signed certificate (generated)
-│   └── signed.key           # Self-signed private key (generated)
+│   ├── cert.crt                 # Self-signed certificate (generated)
+│   └── priv_key.pem             # Self-signed private key (generated)
 ├── templates/                   # Directory for HTML templates
 │   └── index.html               # Main HTML template for the application
 └── README.md                    # This readme file
