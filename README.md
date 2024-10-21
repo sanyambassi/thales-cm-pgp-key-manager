@@ -57,9 +57,10 @@ python app.py
 python3 app.py
 ```
 
+
 The application will be accessible at:
 
-https://localhost:443
+*https://Your-IP:443*
 
 
 ## Importing a PGP Key
