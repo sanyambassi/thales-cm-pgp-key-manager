@@ -33,7 +33,7 @@ pip install flask requests
 Clone the Repository: Clone this repository to your local machine:
 
 ```bash
-git clone https://github.com/yourusername/pgp-key-import-export-ciphertrust.git](https://github.com/sanyambassi/thales-cm-pgp-key-manager.git
+git clone https://github.com/sanyambassi/thales-cm-pgp-key-manager.git
 cd thales-cm-pgp-key-manager 
 ```
 
