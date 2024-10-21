@@ -32,23 +32,28 @@ pip install flask requests
 
 Clone the Repository: Clone this repository to your local machine:
 
-bash
-Copy code
-git clone https://github.com/yourusername/pgp-key-import-export-ciphertrust.git
+```bash
+git clone https://github.com/yourusername/pgp-key-import-export-ciphertrust.git](https://github.com/sanyambassi/thales-cm-pgp-key-manager.git
 cd thales-cm-pgp-key-manager 
-SSL Certificate Generation: This application uses SSL to ensure secure communication. To generate a self-signed SSL certificate, run the following command:
+```
 
-bash
-Copy code
+SSL Certificate Generation: This application uses SSL to ensure secure communication and generates a self-signed certificate when the application is launched. The certificate and private key are stored inside .\certs directory. You can also generate an SSL certificate manually to ensure secure communication. To generate a self-signed SSL certificate, run the following command:
+
+```bash
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout certs/selfsigned.key -out certs/selfsigned.crt -subj "/CN=localhost"
-Run the Application: Run the Flask application using the following command:
+```
 
-bash
-Copy code
+## Run the Application 
+
+Run the Flask application using the following command:
+
+```bash
 python app.py
+```
+
 The application will be accessible at:
 
-HTTPS: https://localhost:443
+https://localhost:443
 
 ## Usage
 Importing a PGP Key
