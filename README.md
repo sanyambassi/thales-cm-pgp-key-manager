@@ -1,14 +1,14 @@
-# thales-cm-pgp-key-manager
+# thales-cm-pgp-key-manager 
 
 # PGP Key Import/Export for CipherTrust
 
-This is a web-based application that allows users to import and export PGP keys with a Thales CipherTrust Manager. It provides a simple interface to authenticate with the CipherTrust Manager, manage PGP keys (import/export), and show results directly in the browser.
+This is a web-based application that allows users to import and export PGP keys with a Thales CipherTrust Manager using a Web UI. It provides a simple interface to authenticate with the CipherTrust Manager, manage PGP keys (import/export), and show results directly in the browser.
 
 ## Features
 
 - Import PGP keys (either by pasting key contents or uploading a key file)
 - Export PGP keys directly from the CipherTrust Manager
-- Display operation results in the browser
+- Displays results in the browser
 - Supports domains on CipherTrust Manager
 
 ## Prerequisites
@@ -16,7 +16,7 @@ This is a web-based application that allows users to import and export PGP keys 
 To run this application, you will need:
 
 - **Python 3.x**
-- **Flask** for creating the web server
+- **Flask** for setting up the web server
 - **OpenSSL** for generating the SSL certificates (or you can use your own)
 - The following Python packages:
   - `flask`
@@ -28,12 +28,13 @@ You can install the necessary dependencies by running:
 pip install flask requests
 
 ## Application Setup
+
 Clone the Repository: Clone this repository to your local machine:
 
 bash
 Copy code
 git clone https://github.com/yourusername/pgp-key-import-export-ciphertrust.git
-cd pgp-key-import-export-ciphertrust
+cd thales-cm-pgp-key-manager 
 SSL Certificate Generation: This application uses SSL to ensure secure communication. To generate a self-signed SSL certificate, run the following command:
 
 bash
