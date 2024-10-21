@@ -80,7 +80,7 @@ The application will be accessible at:
 ```bash
 thales-cm-pgp-key-manager/
 │
-├── app.py                       # Main Flask application file
+├── app.py                       # Main application file
 ├── certs/                       # Directory containing SSL certificates
 │   ├── cert.crt                 # Self-signed certificate (generated)
 │   └── priv_key.pem             # Self-signed private key (generated)
