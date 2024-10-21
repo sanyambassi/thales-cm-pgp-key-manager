@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PGP Key Manager</title>
+    <style>
+        /* Basic styling for the page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full height to center vertically */
+        }
+
+        /* Flex container for form and result */
+        .container {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: flex-start; /* Align form and modal correctly */
+            width: 100%;
+        }
+
+        /* Styling for the form */
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="password"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px; /* Added spacing above the submit button */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .radio-group {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px; /* Increased spacing between radio buttons and next element */
+            font-weight: bold;
+        }
+
+        .radio-group div {
+            display: flex;
+            align-items: center;
+        }
+
+        .radio-group input {
+            margin-right: 8px;
+        }
+
+        /* Styling for the modal (pop-up) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Hide import section initially */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="pgp-form" method="post" enctype="multipart/form-data">
+            <h1>PGP Key Manager</h1>
+
+            <label for="ip">CipherTrust Manager IP:</label>
+            <input type="text" id="ip" name="ip" required>
+
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="domain">Domain:</label>
+            <input type="text" id="domain" name="domain" required>
+
+            <label for="auth_domain">Auth Domain:</label>
+            <input type="text" id="auth_domain" name="auth_domain" required>
+
+            <label for="key_name">PGP Key Name:</label>
+            <input type="text" id="key_name" name="key_name" required>
+
+            <div class="radio-group">
+                <div>
+                    <input type="radio" id="import" name="action" value="import">
+                    <label for="import">Import Key</label>
+                </div>
+                <div>
+                    <input type="radio" id="export" name="action" value="export">
+                    <label for="export">Export Key</label>
+                </div>
+            </div>
+
+            <!-- This section is hidden by default and will appear only when 'Import Key' is selected -->
+            <div id="import-section" class="hidden">
+                <label for="key_contents">Paste PGP Key Contents:</label>
+                <textarea id="key_contents" name="key_contents"></textarea>
+
+                <label for="key_file">Or Upload PGP Key File:</label>
+                <input type="file" id="key_file" name="key_file">
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <!-- Modal for displaying the result -->
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modal-body">
+                <!-- This is where the result will be shown -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle file input and update textarea with file contents
+        document.getElementById('key_file').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('key_contents').value = e.target.result;
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        // Show/Hide PGP Key Contents and File Upload based on radio selection
+        const importRadio = document.getElementById('import');
+        const exportRadio = document.getElementById('export');
+        const importSection = document.getElementById('import-section');
+
+        function updateFormVisibility() {
+            if (importRadio.checked) {
+                importSection.classList.remove('hidden');
+            } else {
+                importSection.classList.add('hidden');
+            }
+        }
+
+        // Add event listeners to toggle the visibility of the PGP Key Contents section
+        importRadio.addEventListener('change', updateFormVisibility);
+        exportRadio.addEventListener('change', updateFormVisibility);
+
+        // Modal handling
+        const modal = document.getElementById("resultModal");
+        const modalBody = document.getElementById("modal-body");
+        const closeModal = document.getElementsByClassName("close")[0];
+
+        closeModal.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('pgp-form').onsubmit = async function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+
+            const response = await fetch('/process', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                let resultContent = `<p>${result.success}</p>`;
+
+                // Show response details for import (optional)
+                if (result.response) {
+                    resultContent += `<p>Key ID: ${result.response.id}</p>`;
+                    resultContent += `<p>SHA1 Fingerprint: ${result.response.sha1Fingerprint}</p>`;
+                    resultContent += `<p>SHA256 Fingerprint: ${result.response.sha256Fingerprint}</p>`;
+                }
+
+                // Show exported key material for export
+                if (result.key_material) {
+                    resultContent += `<p>Exported Key:</p><pre>${result.key_material}</pre>`;
+                }
+
+                modalBody.innerHTML = resultContent;
+            } else {
+                modalBody.innerHTML = `<p>${result.error}</p>`;
+            }
+
+            modal.style.display = "block";
+
+            // Clear the form after successful submission
+            document.getElementById('pgp-form').reset();
+            document.getElementById('key_contents').value = '';  // Clear textarea explicitly
+            importSection.classList.add('hidden');  // Hide import section after form reset
+        };
+
+        // Initialize: hide import section by default
+        updateFormVisibility();
+    </script>
+</body>
+</html>
+
