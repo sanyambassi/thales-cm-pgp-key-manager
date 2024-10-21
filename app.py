@@ -121,8 +121,8 @@ def process():
 
 # Function to generate a self-signed SSL certificate
 def generate_self_signed_cert(cert_dir):
-    cert_file = os.path.join(cert_dir, 'signed.crt')
-    key_file = os.path.join(cert_dir, 'signed.key')
+    cert_file = os.path.join(cert_dir, 'cert.crt')
+    key_file = os.path.join(cert_dir, 'priv_key.pem')
 
     if not os.path.exists(cert_file) or not os.path.exists(key_file):
         os.makedirs(cert_dir, exist_ok=True)
