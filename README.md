@@ -2,7 +2,7 @@
 
 # PGP Key Import/Export for CipherTrust
 
-This is a web-based application that allows users to import and export PGP keys with a Thales CipherTrust Manager using a Web UI. It provides a simple interface to authenticate with the CipherTrust Manager, manage PGP keys (import/export), and show results directly in the browser.
+This is a web-based application that allows users to import and export PGP keys with a Thales CipherTrust Manager using a Web UI. It provides a simple interface to manage PGP keys on CipherTrust manager, and show results directly in the browser.
 
 ## Features
 
