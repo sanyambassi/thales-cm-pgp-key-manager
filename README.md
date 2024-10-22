@@ -93,9 +93,9 @@ thales-cm-pgp-key-manager/
 │   └── priv_key.pem             # Self-signed private key (generated)
 ├── templates/                   # Directory for HTML templates
 │   └── index.html               # Main HTML template for the application
-├── static/                      # Directory for thales logo
-│   └── images
-│       └── thales-logo.jpeg
+├── static/                      # Static directory for the webapp
+│   └── images/                  # Directory to store the thales logo image
+│       └── thales-logo.jpeg     # Thales logo
 └── README.md                    # This readme file
 ```
 
