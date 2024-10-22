@@ -62,7 +62,6 @@ The application will be accessible at:
 
 *https://Your-IP:443*
 
-
 ## Importing a PGP Key
 - Enter the required details (CipherTrust Manager IP, username, password, domain, auth domain, and a key name).
 - Select the Import Key option.
@@ -70,11 +69,19 @@ The application will be accessible at:
 - Click Submit to import the PGP key.
 - The ID and fingerprint of the imported key will be displayed. 
 
+## Importing PGP Keys in bulk
+- Enter the required details (CipherTrust Manager IP, username, password, domain, auth domain, and a key name).
+- Select the Bulk Import option.
+- Upload files containing the PPG keys (one key per file)
+- Click Submit to import the PGP keys.
+- The ID and fingerprint of the imported keys will be displayed. 
+
 ## Exporting a PGP Key
 - Enter the required details (CipherTrust Manager IP, username, password, domain, auth domain, and a key name).
 - Select the Export Key option.
 - Click Submit to export the PGP key.
 - The exported PGP key will be displayed.
+- Optionally, download the key.
 
 ## Project Structure
 ```bash
@@ -86,6 +93,9 @@ thales-cm-pgp-key-manager/
 │   └── priv_key.pem             # Self-signed private key (generated)
 ├── templates/                   # Directory for HTML templates
 │   └── index.html               # Main HTML template for the application
+├── static/                      # Directory for thales logo
+│   └── images
+│       └── thales-logo.jpeg
 └── README.md                    # This readme file
 ```
 
