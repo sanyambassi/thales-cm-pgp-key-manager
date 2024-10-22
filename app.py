@@ -4,7 +4,7 @@ import base64
 import ssl
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 
 # CipherTrust Manager authentication
 def authenticate_to_ciphertrust(ip, username, password, domain, auth_domain):
@@ -81,7 +81,6 @@ def process():
     password = data['password']
     domain = data['domain']
     auth_domain = data['auth_domain']
-    key_name = data['key_name']
     action = data['action']
 
     # Authenticate to CipherTrust Manager
@@ -94,8 +93,9 @@ def process():
     if not user_id:
         return jsonify({"error": "Failed to retrieve user ID"})
 
-    # Handle import
+    # Handle single import
     if action == "import":
+        key_name = data['key_name']
         key_contents = data.get('key_contents', None)
 
         if not key_contents and 'key_file' in request.files:
@@ -113,11 +113,50 @@ def process():
 
     # Handle export
     elif action == "export":
+        key_name = data['key_name']
         key_material = export_pgp_key(ip, jwt, key_name)
         if key_material:
             return jsonify({"success": "Key successfully exported", "key_material": key_material})
         else:
             return jsonify({"error": "Failed to export the key"})
+
+    # Handle bulk import
+    elif action == "bulk_import":
+        if 'bulk_key_files' not in request.files:
+            return jsonify({"error": "No key files uploaded for bulk import"})
+
+        files = request.files.getlist('bulk_key_files')
+        results = []
+
+        for file in files:
+            key_name = file.filename
+            key_contents = file.read().decode()
+
+            # Attempt to upload each key
+            success, response_data = upload_pgp_key(ip, jwt, key_name, key_contents, user_id)
+            if success:
+                # Extract key ID and fingerprints from the response data
+                key_id = response_data.get('id', 'Unknown ID')
+                sha1_fingerprint = response_data.get('sha1Fingerprint', 'Unknown SHA1')
+                sha256_fingerprint = response_data.get('sha256Fingerprint', 'Unknown SHA256')
+
+                # Append detailed success report
+                results.append({
+                    "status": "success",
+                    "key_name": key_name,
+                    "key_id": key_id,
+                    "sha1_fingerprint": sha1_fingerprint,
+                    "sha256_fingerprint": sha256_fingerprint
+                })
+            else:
+                # Append failure report
+                results.append({
+                    "status": "failure",
+                    "key_name": key_name
+                })
+
+        return jsonify({"success": "Bulk import completed", "results": results})
+
 
 # Function to generate a self-signed SSL certificate
 def generate_self_signed_cert(cert_dir):
@@ -150,4 +189,3 @@ if __name__ == '__main__':
 
     # Run the app with SSL enabled on port 443
     app.run(host='0.0.0.0', port=443, ssl_context=context)
-
