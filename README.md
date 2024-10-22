@@ -40,7 +40,7 @@ cd thales-cm-pgp-key-manager
 SSL Certificate Generation: This application uses SSL to ensure secure communication and generates a self-signed certificate when the application is launched. The certificate and private key are stored inside .\certs directory. You can also generate an SSL certificate manually to ensure secure communication. To generate a self-signed SSL certificate, run the following command:
 
 ```bash
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout certs/selfsigned.key -out certs/selfsigned.crt -subj "/CN=localhost"
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout certs/priv_key.pem -out certs/cert.crt -subj "/CN=localhost"
 ```
 
 ## Run the Application 
