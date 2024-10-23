@@ -59,6 +59,26 @@ def upload_pgp_key(ip, jwt, key_name, key_material, user_id):
         return True, response.json()
     return False, None
 
+# Function to fetch the list of keys
+def fetch_keys(ip, jwt):
+    keys_url = f"https://{ip}/api/v1/vault/secrets?skip=0&limit=-1"
+    headers = {
+        'Authorization': f'Bearer {jwt}',
+        'accept': 'application/json'
+    }
+    response = requests.get(keys_url, headers=headers, verify=False)
+
+    try:
+        response_data = response.json()
+        if 'resources' in response_data:
+            return response_data['resources']
+        else:
+            print(f"Unexpected response format: {response_data}")  # Log the unexpected format
+            return None
+    except Exception as e:
+        print(f"Error parsing response: {e}, Response text: {response.text}")  # Log the parsing error
+        return None
+
 # Function to export the PGP key
 def export_pgp_key(ip, jwt, key_name):
     export_url = f"https://{ip}/api/v1/vault/secrets/{key_name}/export"
@@ -113,12 +133,37 @@ def process():
 
     # Handle export
     elif action == "export":
-        key_name = data['key_name']
-        key_material = export_pgp_key(ip, jwt, key_name)
-        if key_material:
-            return jsonify({"success": "Key successfully exported", "key_material": key_material})
-        else:
-            return jsonify({"error": "Failed to export the key"})
+        key_name = data.get('key_name')
+
+        # If no key name is provided, fetch and return the list of keys
+        if not key_name and 'selected_keys' not in data:
+            keys = fetch_keys(ip, jwt)
+            if keys:
+                return jsonify({"keys": keys})
+            else:
+                return jsonify({"error": "Failed to fetch keys for export"})
+
+        # If multiple keys are selected for export
+        if 'selected_keys' in data:
+            selected_keys = data.getlist('selected_keys')
+            results = []
+            for key in selected_keys:
+                print(f"Attempting to export key: {key}")  # Log each key
+                key_material = export_pgp_key(ip, jwt, key)
+                if key_material:
+                    results.append({"key_name": key, "key_material": key_material})
+                else:
+                    print(f"Failed to export key: {key}")  # Log failures
+                    results.append({"key_name": key, "error": "Failed to export key"})
+            return jsonify({"success": "Keys exported", "results": results})
+    
+        # If a single key name is provided for export
+        if key_name:
+            key_material = export_pgp_key(ip, jwt, key_name)
+            if key_material:
+                return jsonify({"success": "Key exported", "key_material": key_material})
+            else:
+                return jsonify({"error": "Failed to export key"})
 
     # Handle bulk import
     elif action == "bulk_import":
