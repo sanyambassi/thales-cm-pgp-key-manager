@@ -63,24 +63,26 @@ The application will be accessible at:
 *https://Your-IP:443*
 
 ## Importing a PGP Key
-- Enter the required details (CipherTrust Manager IP, username, password, domain, auth domain, and a key name).
+- Enter the required details (CipherTrust Manager IP, username, password, domain, auth domain).
 - Select the Import Key option.
+- Enter a name for the PGP Key.
 - Paste the PGP key contents or upload a PGP key file.
-- Click Submit to import the PGP key.
+- Click Import Now to import the PGP key.
 - The ID and fingerprint of the imported key will be displayed. 
 
 ## Importing PGP Keys in bulk
-- Enter the required details (CipherTrust Manager IP, username, password, domain, auth domain, and a key name).
+- Enter the required details (CipherTrust Manager IP, username, password, domain, auth domain).
 - Select the Bulk Import option.
 - Upload files containing the PPG keys (one key per file)
-- Click Submit to import the PGP keys.
-- The ID and fingerprint of the imported keys will be displayed. 
+- Click on Import Multiple Keys to import the PGP keys.
+- The ID and fingerprint of the imported keys will be displayed. The name of the keys on the CipherTrust Manager will be the same as the name of the files being uploaded.
 
 ## Exporting a PGP Key
-- Enter the required details (CipherTrust Manager IP, username, password, domain, auth domain, and a key name).
+- Enter the required details (CipherTrust Manager IP, username, password, domain, auth domain).
 - Select the Export Key option.
-- Click Submit to export the PGP key.
-- The exported PGP key will be displayed.
+- Enter a key name if you know the name of the key to export. If not, click on List Available Keys to Export to view the list of keys. You can export multiple keys throught the list keys pop up. 
+- Click Export Now to export the PGP key (If a key name was provided in the form).
+- The exported PGP key(s) will be displayed.
 - Optionally, download the key.
 
 ## Project Structure
