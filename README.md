@@ -7,7 +7,7 @@ This is a web-based application that allows users to import and export PGP keys 
 ## Features
 
 - Import PGP keys (either by pasting key contents or uploading a key file)
-- Export PGP keys directly from the CipherTrust Manager
+- Export PGP keys from the CipherTrust Manager
 - Displays results in the browser
 - Supports domains on CipherTrust Manager
 
