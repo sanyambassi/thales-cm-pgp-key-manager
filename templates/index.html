@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PGP Key Manager</title>
     <style>
-        /* Basic styling for the page */
+        /* General page styling */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e9f0f5;
             margin: 0;
             padding: 0;
             display: flex;
@@ -17,38 +17,24 @@
             height: 100vh;
         }
 
-        /* Container for logo and form */
         .container {
             background: #fff;
             padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            width: 350px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            width: 400px;
             text-align: center;
         }
 
-        /* Logo styling */
-        .logo-container {
-            margin-bottom: 20px;
-        }
-
         .logo-container img {
-            height: 50px;
+            height: 60px;
         }
 
-        /* Title styling */
         h1 {
-            font-size: 18px;
-            font-weight: 600;
+            font-size: 20px;
+            font-weight: 700;
             color: #333;
             margin-bottom: 20px;
-        }
-
-        .form-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #888;
-            margin-bottom: 30px;
         }
 
         label {
@@ -56,43 +42,44 @@
             margin-bottom: 8px;
             color: #555;
             font-weight: bold;
+            font-size: 14px;
         }
 
-        /* Styling for inputs and text areas */
         input[type="text"], input[type="password"], textarea {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
             box-sizing: border-box;
             font-size: 14px;
-            background-color: #f7f7f7;
+            background-color: #f9f9f9;
             transition: all 0.3s ease;
         }
 
         input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
-            border-color: #007bff;
+            border-color: #17a2b8;
             outline: none;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            box-shadow: 0 0 8px rgba(23, 162, 184, 0.4);
             background-color: #fff;
         }
 
         button {
             width: 100%;
-            padding: 12px;
-            background-color: #007bff;
+            padding: 14px;
+            background-color: #17a2b8;
             border: none;
             color: white;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 16px;
+            font-weight: bold;
             margin-top: 10px;
             transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #138496;
         }
 
         .radio-group {
@@ -111,7 +98,18 @@
             margin-right: 8px;
         }
 
-        /* Modal styles for results */
+        /* Flexbox layout for username and password fields */
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .form-row .form-group {
+            width: 48%;
+        }
+
+        /* Modal improvements */
         .modal {
             display: none;
             position: fixed;
@@ -120,83 +118,126 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            overflow: auto;
         }
 
         .modal-content {
             background-color: #fff;
-            margin: 10% auto;
+            margin: 5% auto;
             padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 600px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            height: 70vh; /* Ensure height */
-            overflow-y: scroll; /* Enable scrolling */
+            border: 3px solid #17a2b8;
+            width: 90%;
+            max-width: 900px;
+            border-radius: 12px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+            animation: slide-down 0.4s ease-in-out;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slide-down {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background-color: #17a2b8;
+            padding: 10px;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .modal-body {
+            padding: 20px;
+            font-size: 16px;
+            color: #333;
+            text-align: left;
         }
 
         .close {
-            color: #aaa;
+            color: white;
             float: right;
             font-size: 28px;
             font-weight: bold;
+            cursor: pointer;
+            margin-right: 10px;
         }
 
-        .close:hover,
-        .close:focus {
-            color: black;
+        .close:hover, .close:focus {
+            color: #e0e0e0;
             text-decoration: none;
             cursor: pointer;
         }
 
+        /* Improve look of the list and key results */
         pre {
             background-color: #f4f4f4;
-            padding: 10px;
-            border-radius: 5px;
-            font-family: monospace;
-            white-space: pre-wrap;
-            word-wrap: break-word;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre;
+            word-wrap: normal;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
         }
 
-        /* Hide import section initially */
+        /* Hide sections initially */
         .hidden {
             display: none;
         }
     </style>
 </head>
 <body>
-    <!-- Container for the logo and form -->
     <div class="container">
-        <!-- Logo -->
         <div class="logo-container">
             <img src="/static/images/thales-logo.jpeg" alt="Thales Logo">
         </div>
 
-        <!-- Form title -->
         <h1>Thales CipherTrust PGP Key Manager</h1>
 
-        <!-- Form for input fields -->
         <form id="pgp-form" method="post" enctype="multipart/form-data">
+
+            <!-- CipherTrust Manager IP -->
             <label for="ip">CipherTrust Manager IP:</label>
             <input type="text" id="ip" name="ip" placeholder="Enter IP address" required>
 
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" placeholder="Enter username" required>
+            <!-- Username and Password side by side -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" placeholder="Enter username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" placeholder="Enter password" required>
+                </div>
+            </div>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" placeholder="Enter password" required>
+            <!-- Domain and Auth Domain side by side -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="domain">Domain:</label>
+                    <input type="text" id="domain" name="domain" placeholder="Enter domain" required>
+                </div>
+                <div class="form-group">
+                    <label for="auth_domain">Auth Domain:</label>
+                    <input type="text" id="auth_domain" name="auth_domain" placeholder="Enter auth domain" required>
+                </div>
+            </div>
 
-            <label for="domain">Domain:</label>
-            <input type="text" id="domain" name="domain" placeholder="Enter domain" required>
-
-            <label for="auth_domain">Auth Domain:</label>
-            <input type="text" id="auth_domain" name="auth_domain" placeholder="Enter auth domain" required>
-
-            <label for="key_name">PGP Key Name (for single import/export):</label>
-            <input type="text" id="key_name" name="key_name" placeholder="Enter key name">
-
-            <!-- Radio buttons for action -->
+            <!-- Radio button options -->
             <div class="radio-group">
                 <div>
                     <input type="radio" id="import" name="action" value="import">
@@ -212,7 +253,13 @@
                 </div>
             </div>
 
-            <!-- Import section (hidden by default) -->
+            <!-- Hidden PGP Key Name Field -->
+            <div id="key-name-field" class="hidden">
+                <label for="key_name">PGP Key Name:</label>
+                <input type="text" id="key_name" name="key_name" placeholder="Enter key name">
+            </div>
+
+            <!-- Import section -->
             <div id="import-section" class="hidden">
                 <label for="key_contents">Paste PGP Key Contents:</label>
                 <textarea id="key_contents" name="key_contents" placeholder="Paste PGP Key"></textarea>
@@ -221,77 +268,159 @@
                 <input type="file" id="key_file" name="key_file">
             </div>
 
-            <!-- Bulk import section (hidden by default) -->
+            <!-- Bulk Import Section -->
             <div id="bulk-import-section" class="hidden">
-                <label for="bulk_key_files">Upload Multiple PGP Key Files (for bulk import):</label>
+                <label for="bulk_key_files">Upload PGP Key Files (one key per file):</label>
                 <input type="file" id="bulk_key_files" name="bulk_key_files" multiple>
             </div>
 
-            <button type="submit">Submit</button>
+            <!-- Action Buttons -->
+            <button id="importNowButton" class="hidden">Import Now</button>
+            <button id="bulkImportButton" class="hidden">Import Multiple Keys</button>
+            <button id="listKeysButton" class="hidden">List Available Keys to Export</button>
+            <button id="exportNowButton" class="hidden">Export Now</button>
         </form>
     </div>
 
-    <!-- Modal for displaying the result -->
+    <!-- Modal for displaying results -->
     <div id="resultModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <div id="modal-body">
-                <!-- This is where the result will be shown -->
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                Operation Results
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Results will appear here -->
             </div>
         </div>
     </div>
 
+    <!-- Modal for key selection -->
+    <div id="keySelectionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                Key Selection
+            </div>
+            <div class="modal-body" id="key-list">
+                <!-- Key list will appear here -->
+            </div>
+            <button id="exportSelectedKeys">Export Selected Keys</button>
+        </div>
+    </div>
+
     <script>
-        // Show/Hide PGP Key Contents and Bulk Import sections based on radio selection
         const importRadio = document.getElementById('import');
         const exportRadio = document.getElementById('export');
         const bulkImportRadio = document.getElementById('bulk_import');
         const importSection = document.getElementById('import-section');
         const bulkImportSection = document.getElementById('bulk-import-section');
+        const keyNameField = document.getElementById('key-name-field');
+        const keyNameInput = document.getElementById('key_name');
+
+        const importNowButton = document.getElementById('importNowButton');
+        const bulkImportButton = document.getElementById('bulkImportButton');
+        const listKeysButton = document.getElementById('listKeysButton');
+        const exportNowButton = document.getElementById('exportNowButton');
 
         function updateFormVisibility() {
             if (importRadio.checked) {
+                keyNameField.classList.remove('hidden');
                 importSection.classList.remove('hidden');
                 bulkImportSection.classList.add('hidden');
+
+                // Show Import Now button
+                importNowButton.classList.remove('hidden');
+
+                // Hide other buttons
+                bulkImportButton.classList.add('hidden');
+                listKeysButton.classList.add('hidden');
+                exportNowButton.classList.add('hidden');
             } else if (bulkImportRadio.checked) {
+                keyNameField.classList.add('hidden');
                 importSection.classList.add('hidden');
                 bulkImportSection.classList.remove('hidden');
-            } else {
+
+                // Show Import Multiple Keys button
+                bulkImportButton.classList.remove('hidden');
+
+                // Hide other buttons
+                importNowButton.classList.add('hidden');
+                listKeysButton.classList.add('hidden');
+                exportNowButton.classList.add('hidden');
+            } else if (exportRadio.checked) {
+                keyNameField.classList.remove('hidden');
                 importSection.classList.add('hidden');
                 bulkImportSection.classList.add('hidden');
+
+                // Initially, show List Available Keys to Export button
+                listKeysButton.classList.remove('hidden');
+                exportNowButton.classList.add('hidden');
+
+                // Hide other buttons
+                importNowButton.classList.add('hidden');
+                bulkImportButton.classList.add('hidden');
+
+                // Check if key_name is entered
+                if (keyNameInput.value.trim() !== '') {
+                    // Show Export Now button
+                    exportNowButton.classList.remove('hidden');
+                    listKeysButton.classList.add('hidden');
+                } else {
+                    // Show List Available Keys to Export button
+                    exportNowButton.classList.add('hidden');
+                    listKeysButton.classList.remove('hidden');
+                }
+            } else {
+                keyNameField.classList.add('hidden');
+                importSection.classList.add('hidden');
+                bulkImportSection.classList.add('hidden');
+
+                // Hide all action buttons
+                importNowButton.classList.add('hidden');
+                bulkImportButton.classList.add('hidden');
+                listKeysButton.classList.add('hidden');
+                exportNowButton.classList.add('hidden');
             }
         }
 
-        // Add event listeners to toggle the visibility of the sections
         importRadio.addEventListener('change', updateFormVisibility);
         exportRadio.addEventListener('change', updateFormVisibility);
         bulkImportRadio.addEventListener('change', updateFormVisibility);
 
-        // Modal handling
+        keyNameInput.addEventListener('input', function() {
+            if (exportRadio.checked) {
+                if (keyNameInput.value.trim() !== '') {
+                    // Show Export Now button
+                    exportNowButton.classList.remove('hidden');
+                    listKeysButton.classList.add('hidden');
+                } else {
+                    // Show List Available Keys to Export button
+                    exportNowButton.classList.add('hidden');
+                    listKeysButton.classList.remove('hidden');
+                }
+            }
+        });
+
         const modal = document.getElementById("resultModal");
         const modalBody = document.getElementById("modal-body");
         const closeModal = document.getElementsByClassName("close")[0];
 
         closeModal.onclick = function() {
             modal.style.display = "none";
+            document.getElementById('pgp-form').reset();
+            updateFormVisibility();
         }
 
         window.onclick = function(event) {
             if (event.target == modal) {
                 modal.style.display = "none";
+                document.getElementById('pgp-form').reset();
+                updateFormVisibility();
             }
         }
 
-        // Handle form submission
-        document.getElementById('pgp-form').onsubmit = async function(event) {
-            event.preventDefault();
-            const formData = new FormData(event.target);
-
-            const response = await fetch('/process', {
-                method: 'POST',
-                body: formData
-            });
-
+        async function handleResponse(response) {
             const result = await response.json();
 
             let resultContent = '';
@@ -299,39 +428,56 @@
             if (result.success) {
                 resultContent = `<p>${result.success}</p>`;
 
-                // Handle detailed results for single import
                 if (result.response) {
+                    // Single key import
                     resultContent += `<h3>Key Import Details:</h3>`;
                     resultContent += `<p>Key ID: ${result.response.id}</p>`;
                     resultContent += `<p>SHA1 Fingerprint: ${result.response.sha1Fingerprint}</p>`;
                     resultContent += `<p>SHA256 Fingerprint: ${result.response.sha256Fingerprint}</p>`;
                 }
 
-                // Handle detailed results for bulk import
                 if (result.results) {
-                    resultContent += "<h3>Key Import Results (Bulk):</h3>";
-                    resultContent += "<ul>";
-                    result.results.forEach((keyResult) => {
-                        if (keyResult.status === "success") {
-                            resultContent += `
-                                <li>
-                                    <strong>${keyResult.key_name}</strong> - Imported Successfully<br>
-                                    Key ID: ${keyResult.key_id}<br>
-                                    SHA1 Fingerprint: ${keyResult.sha1_fingerprint}<br>
-                                    SHA256 Fingerprint: ${keyResult.sha256_fingerprint}
-                                </li>`;
-                        } else {
-                            resultContent += `<li><strong>${keyResult.key_name}</strong> - Failed to Import</li>`;
-                        }
-                    });
-                    resultContent += "</ul>";
+                    if (result.results.length > 0 && result.results[0].hasOwnProperty('status')) {
+                        // Bulk import results
+                        resultContent += "<h3>Key Import Results (Bulk):</h3>";
+                        resultContent += "<ul>";
+                        result.results.forEach((keyResult) => {
+                            if (keyResult.status === "success") {
+                                resultContent += `
+                                    <li>
+                                        <strong>${keyResult.key_name}</strong> - Imported Successfully<br>
+                                        Key ID: ${keyResult.key_id}<br>
+                                        SHA1 Fingerprint: ${keyResult.sha1_fingerprint}<br>
+                                        SHA256 Fingerprint: ${keyResult.sha256_fingerprint}
+                                    </li>`;
+                            } else {
+                                resultContent += `<li><strong>${keyResult.key_name}</strong> - Failed to Import</li>`;
+                            }
+                        });
+                        resultContent += "</ul>";
+                    } else if (result.results.length > 0 && result.results[0].hasOwnProperty('key_material')) {
+                        // Bulk export results
+                        resultContent += "<h3>Key Export Results:</h3><ul>";
+                        result.results.forEach(keyResult => {
+                            if (keyResult.key_material) {
+                                resultContent += `<li>${keyResult.key_name}: Exported successfully<br><pre>${keyResult.key_material}</pre>`;
+                                const blob = new Blob([keyResult.key_material], { type: 'text/plain' });
+                                const url = URL.createObjectURL(blob);
+                                resultContent += `<a href="${url}" download="${keyResult.key_name}.asc">Download ${keyResult.key_name}.asc</a></li>`;
+                            } else {
+                                resultContent += `<li>${keyResult.key_name}: Failed to export</li>`;
+                            }
+                        });
+                        resultContent += "</ul>";
+                    } else {
+                        // Unknown result type
+                        resultContent += "<p>Unknown operation results.</p>";
+                    }
                 }
 
-                // Handle key export and display key material + allow download
-                if (result.key_material) {
+                if (result.key_material && !result.results) {
+                    // Single key export
                     resultContent += `<h3>Exported Key Material:</h3><pre>${result.key_material}</pre>`;
-
-                    // Create a download link for the exported key material
                     const blob = new Blob([result.key_material], { type: 'text/plain' });
                     const url = URL.createObjectURL(blob);
                     const keyName = document.getElementById('key_name').value || 'pgp_key';
@@ -345,14 +491,125 @@
             modalBody.innerHTML = resultContent;
             modal.style.display = "block";
 
-            // Clear the form after successful submission
+            // Reset the form
             document.getElementById('pgp-form').reset();
-            document.getElementById('key_contents').value = '';  // Clear textarea explicitly
-            importSection.classList.add('hidden');  // Hide import section after form reset
-            bulkImportSection.classList.add('hidden');  // Hide bulk import section after form reset
-        };
+            document.getElementById('key_contents').value = '';
+            keyNameField.classList.add('hidden');
+            importSection.classList.add('hidden');
+            bulkImportSection.classList.add('hidden');
 
-        // Initialize: hide import and bulk import sections by default
+            // Hide action buttons
+            importNowButton.classList.add('hidden');
+            bulkImportButton.classList.add('hidden');
+            listKeysButton.classList.add('hidden');
+            exportNowButton.classList.add('hidden');
+        }
+
+
+        importNowButton.addEventListener('click', async function(event) {
+            event.preventDefault();
+            const formData = new FormData(document.getElementById('pgp-form'));
+
+            const response = await fetch('/process', {
+                method: 'POST',
+                body: formData
+            });
+
+            await handleResponse(response);
+        });
+
+        bulkImportButton.addEventListener('click', async function(event) {
+            event.preventDefault();
+            const formData = new FormData(document.getElementById('pgp-form'));
+
+            const response = await fetch('/process', {
+                method: 'POST',
+                body: formData
+            });
+
+            await handleResponse(response);
+        });
+
+        exportNowButton.addEventListener('click', async function(event) {
+            event.preventDefault();
+            const formData = new FormData(document.getElementById('pgp-form'));
+
+            const response = await fetch('/process', {
+                method: 'POST',
+                body: formData
+            });
+
+            await handleResponse(response);
+        });
+
+        const keySelectionModal = document.getElementById("keySelectionModal");
+        const exportSelectedKeysButton = document.getElementById("exportSelectedKeys");
+        const closeModalKeySelection = document.getElementsByClassName("close")[1];
+
+        closeModalKeySelection.onclick = function() {
+            keySelectionModal.style.display = "none";
+        }
+
+        listKeysButton.addEventListener('click', async function(event) {
+            event.preventDefault();
+
+            const formData = new FormData();
+            formData.append("ip", document.getElementById('ip').value);
+            formData.append("username", document.getElementById('username').value);
+            formData.append("password", document.getElementById('password').value);
+            formData.append("domain", document.getElementById('domain').value);
+            formData.append("auth_domain", document.getElementById('auth_domain').value);
+            formData.append("action", "export");
+
+            const response = await fetch('/process', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+
+            if (result.keys) {
+                let keyListHTML = '<h3>Select keys to export:</h3>';
+                result.keys.forEach(key => {
+                    keyListHTML += `<label><input type="checkbox" value="${key.name}" class="key-checkbox"> ${key.name}</label><br>`;
+                });
+                document.getElementById('key-list').innerHTML = keyListHTML;
+                keySelectionModal.style.display = "block";
+            } else {
+                alert(result.error || 'Error fetching keys');
+            }
+        });
+
+        exportSelectedKeysButton.addEventListener('click', async function() {
+            const selectedKeys = Array.from(document.querySelectorAll('.key-checkbox:checked')).map(cb => cb.value);
+            if (selectedKeys.length > 0) {
+                const formData = new FormData();
+                formData.append("ip", document.getElementById('ip').value);
+                formData.append("username", document.getElementById('username').value);
+                formData.append("password", document.getElementById('password').value);
+                formData.append("domain", document.getElementById('domain').value);
+                formData.append("auth_domain", document.getElementById('auth_domain').value);
+                formData.append("action", "export");
+
+                selectedKeys.forEach(key => formData.append("selected_keys", key));
+
+                try {
+                    const response = await fetch('/process', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    keySelectionModal.style.display = "none";
+
+                    await handleResponse(response);
+                } catch (error) {
+                    console.error('Request failed', error);
+                    alert('Error exporting keys: ' + error.message);
+                }
+            } else {
+                alert('No keys selected for export');
+            }
+        });
+
         updateFormVisibility();
     </script>
 </body>
